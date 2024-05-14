@@ -1,0 +1,583 @@
+Custom Input Fields Example : 
+
+CheckboxGroup ::::::::::::::: 
+<Controller
+  name="available"
+  control={control}
+  render={({ field }) => (
+    <CustomCheckboxGroup label={"Available :"} name="available" options={options} control={control} />
+  )}
+/>
+
+
+Input ::::::::::::::::::::::::
+<Input label={'Size (sq ft) :'} name={'size'} register={register} />
+
+
+
+Select ::::::::::::::::::::::::
+<Controller
+  name="garage"
+  control={control}
+  defaultValue=""
+  render={({ field }) => (
+    <Select label={"Garage :"} field={field} options={garageOptions} />
+  )}
+/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/dashboard/");
+  }, []);
+
+
+//recent inspection 
+
+
+// import { db } from "../services/db";
+  // const [queryData, setQueryData] = useState([]);
+
+// ----------->
+  useEffect(() => {
+
+  //   getAllInspection()
+  //     .then((res) => {
+  //       console.log("Data : ", res);
+  //       setQueryData(res);
+  //     })
+  //     .catch((e) => console.error("Error fetching data : ", e));
+  // }, []);
+
+   // useEffect(() => {
+  //   no(queryData.length);
+  // },[queryData])
+
+  const getAllInspection = () => {
+    return db.General.toArray();
+  };
+
+
+
+//New inspection 
+
+  // const update = async (e) => {
+  //   e.preventDefault();
+  //   await db.General.put({
+  //     id: uid,
+  //     name,
+  //     age,
+  //     address,
+  //   });
+  // };
+
+  / try {
+//   const id = await db.General.add({
+//     name,
+//     number,
+//     address,
+//     bathroom,
+//     room,
+//     basement,
+//     crawlSpace,
+//     garageType,
+//   });
+
+//   await db.PropertyDetails.add({
+//     id: id,
+//     propertyDetails: {},
+//   });
+//   await db.RelatedContacts.add({
+//     id: id,
+//   });
+
+//   Swal.fire({
+//     icon: "success", // You can use 'success', 'error', 'warning', 'info', etc.
+//     title: "Saved",
+//     toast: true,
+//     position: "top-end", // Position of the toast on the screen
+//     timer: 3000, // How long the toast stays visible (in milliseconds)
+//     showConfirmButton: false, // Set to false
+//   });
+
+// console.log(
+//   "Created id Object and Added data ->>>>>>>>>>>",
+//   name,
+//   number,
+//   address,
+//   bathroom,
+//   room,
+//   basement,
+//   crawlSpace,
+//   garageType,
+//   propertyInformation
+// );
+
+//   navigate("/");
+// } catch (e) {
+//   console.log(e);
+// }
+
+
+
+NewInspection 
+// const [bathroom, setBathroom] = useState(0);
+  // const [room, setRoom] = useState(0);
+  // const [basement, setBasement] = useState(0);
+  // const [crawlSpace, setCrawlSpace] = useState(0);
+  // const [garageType, setGarageType] = useState(0);
+
+    // propertyInformation.bathrooms = bathroom;
+  // propertyInformation.basement = basement;
+  // propertyInformation.room = room;
+  // propertyInformation.crowlSpace = crawlSpace;
+  // propertyInformation.GarageType = garageType;
+
+
+Report id 
+//useEffect(() => {
+    // GetAllData().then((res) => {
+    //   console.log("Database for ", id , res);
+    // }).catch(e => console.log(e));
+
+    GetDataById(id).then((res) => {
+      const gen = res[0].General[0];
+      const propDet = res[1].PropertyDetails[0];
+      const relCon = res[2].RelatedContacts[0];
+      setGeneral(gen);
+      setPropertyDetails(propDet);
+      setRelatedContacts(relCon);
+      // setDataForId(gen);
+      // console.log(general,propertyDetails,relatedContacts.id,dataForId)
+      // console.log("1=============",gen,"2================",propDet,"3++++++++++++++++",relCon)
+    });
+  }, []);
+
+  //  const [dataForId, setDataForId] = useState({});
+  const [general, setGeneral] = useState({
+    name: "",
+    number: 0,
+    address: "",
+    bathroom: 0,
+    room: 0,
+    garageType: "",
+    basement: "",
+  });
+  const [propertyDetails, setPropertyDetails] = useState({
+    type: "",
+    style: "",
+    size: "",
+    price: 0,
+    bathroom: 0,
+    yearBuilt: "",
+    garage: "",
+  });
+  const [relatedContacts, setRelatedContacts] = useState({
+    contacts: "",
+  });
+
+
+ const update = async (e) => {
+      e.preventDefault();
+      const values = Object.values(general);
+      for (const value of values) {
+        if (value == "" || value.length == 0) {
+          // alert("Please fill all fields!");
+          Swal.fire({
+            icon: "warning", // You can use 'success', 'error', 'warning', 'info', etc.
+            title: "Error",
+            text: "Please fill all fields",
+            toast: true,
+            position: "top-end", // Position of the toast on the screen
+            timer: 3000, // How long the toast stays visible (in milliseconds)
+            showConfirmButton: false, // Set to false
+          });
+          return;
+        }
+      }
+      console.log("Success!", id);
+      await db.General.put({
+        id: parseInt(id),
+        ...general,
+      });
+
+      Swal.fire({
+        icon: "success", // You can use 'success', 'error', 'warning', 'info', etc.
+        title: "Saved",
+        toast: true,
+        position: "top-end", // Position of the toast on the screen
+        timer: 3000, // How long the toast stays visible (in milliseconds)
+        showConfirmButton: false, // Set to false
+      });
+    };
+
+
+    //PropertyDetails
+
+    
+  const update = async (e) => {
+    e.preventDefault();
+    const values = Object.values(propertyDetails);
+    for (const value of values) {
+      if (value == "" || value.length == 0) {
+        // alert("Please fill all fields!");
+        Swal.fire({
+          icon: "warning", // You can use 'success', 'error', 'warning', 'info', etc.
+          title: "Error",
+          text: "Please fill all fields",
+          toast: true,
+          position: "top-end", // Position of the toast on the screen
+          timer: 3000, // How long the toast stays visible (in milliseconds)
+          showConfirmButton: false, // Set to false
+        });
+        return;
+      }
+    }
+    console.log("Success!", id);
+    await db.PropertyDetails.put({
+      id: parseInt(id),
+      propertyDetails: propertyDetails,
+    });
+
+    Swal.fire({
+      icon: "success", // You can use 'success', 'error', 'warning', 'info', etc.
+      title: "Saved",
+      toast: true,
+      position: "top-end", // Position of the toast on the screen
+      timer: 3000, // How long the toast stays visible (in milliseconds)
+      showConfirmButton: false, // Set to false
+    });
+
+  };
+
+  
+  useEffect(() => {
+    if (data.propertyDetails) {
+      setPropertyDetails(data.propertyDetails);
+    }
+  }, [data]);
+
+  //  {/* <input {...register("firstName")} placeholder='name' />
+      <select {...register("gender")}>
+        <option value="female">female</option>
+        <option value="male">male</option>
+        <option value="other">other</option>
+      </select> */}
+
+
+
+
+      Dynamic Form recipe 
+
+
+        // useEffect(() => {
+  //   // setValue("name", "manish");
+  //   // setValue("number", apiResponse.number);
+  //   // setValue("address.street", apiResponse.address.street);
+  //   // setValue("address.city", apiResponse.address.city);
+  //   // setValue("address.state", apiResponse.address.state);
+  // }, []);
+
+      // console.log(extra);
+  
+  // const AddExtraFieldPop = () => {
+  //   const [name,setname] = useState('');
+  //   const addinput = (name,e) => {
+  //     e.preventDefault();
+  //     const newFields = [...extra,{label: name,name: name}]
+  //     setExtra(newFields);
+  //     setShowPop(false);
+  //   }
+  //   return (
+  //     <>
+  //       <form>
+  //         <label htmlFor="Name">Text Field Name :</label> <br />
+  //         <input value={name}  onChange={(e) => setname(e.target.value)} type="text" />
+  //         <button onClick={(e) => addinput(name,e)}>Create</button>
+  //       </form>
+  //     </>
+  //   )
+  // }
+
+  <label htmlFor="Type" className="text-slate-600">
+        Type :{" "}
+      </label>
+      <input
+        className="w-full py-1 rounded mb-2 border-b-2 border-slate-300"
+        type="text"
+        name="type"
+        value={propertyDetails.type}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor="Type" className="text-slate-600">
+        Style :{" "}
+      </label>
+      <input
+        className="w-full py-1 rounded mb-2 border-b-2 border-slate-300"
+        type="text"
+        name="type"
+        value={propertyDetails.style}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor="Size" className="text-slate-600">
+        Size (sq ft) :
+      </label>
+      <br />
+      <input
+        className="w-full py-1 rounded mb-2 border-b-2 border-slate-300"
+        type="number"
+        name="size"
+        value={propertyDetails.size}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor="Year Built" className="text-slate-600 ">
+        Year Built :
+      </label>{" "}
+      <br />
+      <input
+        className="w-full py-1 rounded mb-2 border-b-2 border-slate-300"
+        type="text"
+        name="yearBuilt"
+        value={propertyDetails.yearBuilt}
+        onChange={handleInputChange}
+      />{" "}
+      <br />
+      <label htmlFor="Sale Price" className="text-slate-600 ">
+        Sale Price :
+      </label>{" "}
+      <br />
+      <input
+        className="w-full py-1 rounded mb-2 border-b-2 border-slate-300"
+        type="text"
+        name="salePrice"
+        value={propertyDetails.salePrice}
+        onChange={handleInputChange}
+      />{" "}
+      <br />
+      <p className="text-slate-600  font-semibold py-5">Report Overview</p>
+      <div>
+        <label htmlFor="Sale Price" className="text-slate-600 ">
+          Scope of Inspection :
+        </label>{" "}
+        <textarea
+          name="scopeOfInspection"
+          id="scopeOfinspection"
+          className="w-full px-1 rounded mb-2 border-b-2 border-slate-300"
+          rows="4"
+          value={propertyDetails.scopeOfInspection}
+          onChange={handleInputChange}
+        ></textarea>
+      </div>
+      <div>
+        <label htmlFor="Sale Price" className="text-slate-600 ">
+          Main Entrance Faces :
+        </label>{" "}
+        <br />
+        <CheckboxGroup
+          value={propertyDetails.mainEntranceFaces}
+          onChange={(values) => handleCheckbox("mainEntranceFaces", values)}
+          name="mainEntranceFaces"
+          colorScheme=""
+        >
+          <Stack
+            className="mt-4"
+            spacing={[1, 5]}
+            direction={["column", "row"]}
+          >
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="North">
+              North
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="South">
+              South
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="East">
+              East
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="West">
+              West
+            </Checkbox>
+          </Stack>
+        </CheckboxGroup>
+      </div>
+      <div>
+        <label htmlFor="State of Occupancy" className="text-slate-600 ">
+          State of Occupancy :
+        </label>{" "}
+        <br />
+        <CheckboxGroup
+          colorScheme=""
+          name="stateOfOccupancy"
+          value={propertyDetails.stateOfOccupancy}
+          onChange={(values) => handleCheckbox("stateOfOccupancy", values)}
+        >
+          <Stack
+            className="mt-4"
+            spacing={[1, 5]}
+            direction={["column", "row"]}
+          >
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Vacant">
+              Vacant
+            </Checkbox>
+            <Checkbox
+              className="bg-slate-400 py-1 px-3 rounded"
+              value="Occupied"
+            >
+              Occupied
+            </Checkbox>
+            <Checkbox
+              className="bg-slate-400 py-1 px-3 rounded"
+              value="Unoccupied"
+            >
+              Upoccupied but furnished
+            </Checkbox>
+          </Stack>
+        </CheckboxGroup>
+      </div>
+      <div>
+        <label htmlFor="Sale Price" className="text-slate-600 ">
+          Weather Condition :
+        </label>{" "}
+        <br />
+        <CheckboxGroup
+          colorScheme=""
+          name="weatherCondition"
+          value={propertyDetails.weatherCondition}
+          onChange={(values) => handleCheckbox("weatherCondition", values)}
+        >
+          <Stack
+            className="mt-4"
+            spacing={[1, 5]}
+            direction={["column", "row"]}
+          >
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Sunny">
+              Sunny
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Cloudy">
+              Cloudy
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Windy">
+              Windy
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Snow">
+              Snow
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Rain">
+              Rain
+            </Checkbox>
+          </Stack>
+        </CheckboxGroup>
+      </div>
+      <div>
+        <label htmlFor="Sale Price" className="text-slate-600 ">
+          Recent Rain :
+        </label>{" "}
+        <br />
+        <CheckboxGroup
+          colorScheme=""
+          value={propertyDetails.recentRain}
+          onChange={(values) => handleCheckbox("recentRain", values)}
+        >
+          <Stack
+            className="mt-4"
+            spacing={[1, 5]}
+            direction={["column", "row"]}
+          >
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="Yes">
+              Yes
+            </Checkbox>
+            <Checkbox className="bg-slate-400 py-1 px-3 rounded" value="No">
+              No
+            </Checkbox>
+          </Stack>
+        </CheckboxGroup>
+      </div>
+
+        const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPropertyDetails({
+      ...propertyDetails,
+      [name]: value,
+    });
+  };
+
+  const handleCheckbox = (field, value) => {
+    setPropertyDetails({
+      ...propertyDetails,
+      [field]: value,
+    });
+  };
+
+
+  25 oct sikhe gaye
+
+    // const [propertyDetails, setPropertyDetails] = useState({
+  //   type: property?.type,
+  //   style: property?.style,
+  //   size: property?.size,
+  //   yearBuilt: property?.yearBuilt,
+  //   salePrice: property?.salePrice,
+  //   scopeOfInspection: property?.scopeOfInspection,
+  //   mainEntranceFaces: property?.mainEntranceFaces,
+  //   stateOfOccupancy: property?.stateOfOccupancy,
+  //   weatherCondition: property?.weatherCondition,
+  //   recentRain: property?.recentRain,
+  //   fireplaces: property?.fireplaces,
+  //   slabOnGrade: property?.slabOnGrade,
+  //   furnace: property?.furnace,
+  //   furnaceFuel: property?.furnaceFuel,
+  //   acUnit: property?.acUnit,
+  //   utilities: property?.utilities,
+  //   waterHeater: property?.waterHeater,
+  //   waterHeaterFuel: property?.waterHeaterFuel,
+  //   notes: property?.notes,
+  // });
+
+
+
+
+
+
+
+
+
+
+calendar  Swal.fire({
+        title: "Create Event",
+        html:
+          `
+          <input id="title" class="w-[100%] border-2 p-2" placeholder="Inspection title">
+          <input type="datetime-local" id="startTime" value='${start}' class="w-[100%] border-2 p-2" placeholder="Inspection title">
+          <input type="datetime-local" id="endTime" class="w-[100%] border-2 p-2" placeholder="Inspection title">
+          `,
+        confirmButtonText: "Create",
+        showCancelButton: true,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          const title = Swal.getPopup().querySelector("#title").value;
+          const startTime = Swal.getPopup().querySelector("#startTime").value;
+          const endTime = Swal.getPopup().querySelector("#endTime").value;
+  
+          if (!title) {
+            Swal.showValidationMessage("Please enter the event title");
+          } else {
+            newEvent.title = title;
+            newEvent.start = startTime;
+            newEvent.end = endTime;
+            setEvents([...events, newEvent]);
+          }
+        },
+      });
