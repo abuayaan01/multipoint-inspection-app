@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// const base_url = "http://192.168.1.34:3000/api";
-// const base_url = "https://multipoint.adfames.com/api";
-const base_url = "https://staging.multinspect.ikshudigital.com/api";
 // const base_url = "http://localhost:3000/api";
 const headers = {
   "Content-Type": "application/json",
